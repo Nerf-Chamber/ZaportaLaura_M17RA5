@@ -11,9 +11,9 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     [SerializeField] private AnimationBehaviour _animation;
 
     private InputSystem_Actions inputActions;
-    private Vector3 onMoveDirection;
 
-    public float speed = 10;
+    private bool isMoving = false;
+    private bool isSprinting = false;
 
     private void Awake()
     {
@@ -45,12 +45,15 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.performed) { _animation.SetWalkState(true); }
-        else { _animation.SetWalkState(false); }
+        isMoving = context.performed ? true : false;
+        _animation.SetRunState(isMoving && isSprinting);
+        _animation.SetWalkState(isMoving);
     }
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        throw new System.NotImplementedException();
+        isSprinting = context.performed ? true : false;
+        if (context.performed && isMoving) { _animation.SetRunState(true); }
+        else { _animation.SetRunState(false); }
     }
 }
