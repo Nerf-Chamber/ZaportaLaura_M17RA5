@@ -27,33 +27,36 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     private void OnEnable() => inputActions.Enable();
     private void OnDisable() => inputActions.Disable();
 
+    private void Update()
+    {
+        ManageAnimationStates();
+    }
+
+    private void ManageAnimationStates()
+    {
+        _animation.SetRunState(isMoving && isSprinting);
+        _animation.SetWalkState(isMoving && !isSprinting);
+    }
+
     // ---------- INTERFACE IMPLEMENTATION ----------
     public void OnAttack(InputAction.CallbackContext context)
     {
         throw new System.NotImplementedException();
     }
-
     public void OnInteract(InputAction.CallbackContext context)
     {
         throw new System.NotImplementedException();
     }
-
     public void OnJump(InputAction.CallbackContext context)
     {
         throw new System.NotImplementedException();
     }
-
     public void OnMove(InputAction.CallbackContext context)
     {
         isMoving = context.performed ? true : false;
-        _animation.SetRunState(isMoving && isSprinting);
-        _animation.SetWalkState(isMoving);
     }
-
     public void OnSprint(InputAction.CallbackContext context)
     {
         isSprinting = context.performed ? true : false;
-        if (context.performed && isMoving) { _animation.SetRunState(true); }
-        else { _animation.SetRunState(false); }
     }
 }
