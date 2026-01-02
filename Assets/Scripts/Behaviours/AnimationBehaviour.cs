@@ -9,4 +9,6 @@ public class AnimationBehaviour : MonoBehaviour
     // PREGUNTAR: Com fer més clean?
     public void SetWalkState(bool isWalking) { _an.SetBool("isWalking", isWalking); }
     public void SetRunState(bool isRunning) { _an.SetBool("isRunning", isRunning); }
+    public void SetJumpState(bool isJumping) { _an.SetBool("isJumping", isJumping); }
+    public void SetDanceState(bool beginDancing) { _an.SetBool("beginDancing", beginDancing); }
 }

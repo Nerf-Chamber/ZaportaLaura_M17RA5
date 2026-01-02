@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +13,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     private bool isMoving = false;
     private bool isSprinting = false;
+    private bool beginDancing = false;
 
     private void Awake()
     {
@@ -36,6 +36,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         _animation.SetRunState(isMoving && isSprinting);
         _animation.SetWalkState(isMoving && !isSprinting);
+        _animation.SetDanceState(beginDancing);
     }
 
     // ---------- INTERFACE IMPLEMENTATION ----------
@@ -51,6 +52,11 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         throw new System.NotImplementedException();
     }
+    public void OnDance(InputAction.CallbackContext context)
+    {
+        beginDancing = true;
+        Invoke(nameof(SetBeginDancingFalse), 1f);
+    }
     public void OnMove(InputAction.CallbackContext context)
     {
         isMoving = context.performed ? true : false;
@@ -59,4 +65,6 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         isSprinting = context.performed ? true : false;
     }
+
+    private void SetBeginDancingFalse() { beginDancing = false; } // Hardcoded xD
 }
