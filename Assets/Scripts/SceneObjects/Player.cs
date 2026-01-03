@@ -50,6 +50,8 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     // ---------- INTERFACE IMPLEMENTATION ----------
     public void OnAttack(InputAction.CallbackContext context)
     {
+        // Mask with Run and Walk, ASK
+        Debug.Log("HOLA");
         isAttacking = isDancing ? false : true;
     }
     public void OnInteract(InputAction.CallbackContext context)
