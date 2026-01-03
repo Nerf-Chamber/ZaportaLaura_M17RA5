@@ -14,12 +14,10 @@ public class AnimationBehaviour : MonoBehaviour
     public void SetJumpState(bool isJumping) { _an.SetBool("isJumping", isJumping); }
     public void SetDanceState(bool isDancing) { _an.SetBool("isDancing", isDancing); }
 
-    // En aquest mètode, quan es prem el botó d'atac, targetLayerWeight es queda en 1
-    // L'animació a la que fa referència, quan acaba té un animation event que fa
-    // que isAttacking sigui fals. La cosa és que, per un motiu que desconec, l'animació
-    // no arriba a acabar. És com si es quedés per la meitat i no sé perquè. Ajuda.
     public void SetAttackState(bool isAttacking) 
     {
+        _an.SetBool("isAttacking", isAttacking);
+
         float currentLayerWeight = _an.GetLayerWeight(attackLayer);
         float targetLayerWeight = isAttacking ? 1 : 0;
 
