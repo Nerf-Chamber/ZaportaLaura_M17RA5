@@ -13,6 +13,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     private bool isMoving = false;
     private bool isSprinting = false;
+    private bool isJumping = false;
     private bool isDancing = false;
 
     private void Awake()
@@ -24,6 +25,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         _animation = GetComponent<AnimationBehaviour>();
 
         PlayerAE.OnDanceEnded += EndDance;
+        PlayerAE.OnJumpEnded += EndJump;
     }
 
     private void OnEnable() => inputActions.Enable();
@@ -39,6 +41,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         _animation.SetRunState(isMoving && isSprinting);
         _animation.SetWalkState(isMoving && !isSprinting);
         _animation.SetDanceState(isDancing);
+        _animation.SetJumpState(isJumping);
     }
 
     // ---------- INTERFACE IMPLEMENTATION ----------
@@ -52,7 +55,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-        throw new System.NotImplementedException();
+        isJumping = isDancing ? false : true;
     }
     public void OnDance(InputAction.CallbackContext context)
     {
@@ -67,6 +70,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         isSprinting = context.performed ? true : false;
     }
 
-    // Animation event
+    // ---------- ANIMATION EVENTS ----------
     private void EndDance() => isDancing = false;
+    private void EndJump() => isJumping = false;
 }
