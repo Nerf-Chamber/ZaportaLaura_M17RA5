@@ -10,5 +10,5 @@ public class AnimationBehaviour : MonoBehaviour
     public void SetWalkState(bool isWalking) { _an.SetBool("isWalking", isWalking); }
     public void SetRunState(bool isRunning) { _an.SetBool("isRunning", isRunning); }
     public void SetJumpState(bool isJumping) { _an.SetBool("isJumping", isJumping); }
-    public void SetDanceState(bool beginDancing) { _an.SetBool("beginDancing", beginDancing); }
+    public void SetDanceState(bool isDancing) { _an.SetBool("isDancing", isDancing); }
 }

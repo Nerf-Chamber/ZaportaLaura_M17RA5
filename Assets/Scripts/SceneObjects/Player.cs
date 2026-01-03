@@ -13,7 +13,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     private bool isMoving = false;
     private bool isSprinting = false;
-    private bool beginDancing = false;
+    private bool isDancing = false;
 
     private void Awake()
     {
@@ -22,6 +22,8 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
         _move = GetComponent<MoveBehaviour>();
         _animation = GetComponent<AnimationBehaviour>();
+
+        PlayerAE.OnDanceEnded += EndDance;
     }
 
     private void OnEnable() => inputActions.Enable();
@@ -36,7 +38,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         _animation.SetRunState(isMoving && isSprinting);
         _animation.SetWalkState(isMoving && !isSprinting);
-        _animation.SetDanceState(beginDancing);
+        _animation.SetDanceState(isDancing);
     }
 
     // ---------- INTERFACE IMPLEMENTATION ----------
@@ -54,8 +56,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     }
     public void OnDance(InputAction.CallbackContext context)
     {
-        beginDancing = true;
-        Invoke(nameof(SetBeginDancingFalse), 1f);
+        isDancing = true;
     }
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -66,5 +67,6 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         isSprinting = context.performed ? true : false;
     }
 
-    private void SetBeginDancingFalse() { beginDancing = false; } // Hardcoded xD
+    // Animation event
+    private void EndDance() => isDancing = false;
 }

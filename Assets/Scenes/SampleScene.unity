@@ -383,6 +383,11 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &695862383 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3cd820eda3e921a4c93b4bd620fe386e, type: 3}
+  m_PrefabInstance: {fileID: 2116969169}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,6 +442,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3cd820eda3e921a4c93b4bd620fe386e, type: 3}
   m_PrefabInstance: {fileID: 2116969169}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1667221223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695862383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b1dc9d493f8b5a429ede4f2b3b712a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAE
 --- !u!1 &1742924956
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +614,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3cd820eda3e921a4c93b4bd620fe386e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1667221223}
   m_SourcePrefab: {fileID: 100100000, guid: 3cd820eda3e921a4c93b4bd620fe386e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
