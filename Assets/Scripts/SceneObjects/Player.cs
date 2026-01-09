@@ -2,11 +2,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(MoveBehaviour))]
+[RequireComponent(typeof(RotationBehaviour))]
 [RequireComponent(typeof(AnimationBehaviour))]
 
 public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 {
     [SerializeField] private MoveBehaviour _move;
+    [SerializeField] private RotationBehaviour _rotation;
     [SerializeField] private AnimationBehaviour _animation;
     [SerializeField] private int walkingSpeed;
     [SerializeField] private int runningSpeed;
@@ -29,6 +31,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         inputActions.Player.SetCallbacks(this);
 
         _move = GetComponent<MoveBehaviour>();
+        _rotation = GetComponent<RotationBehaviour>();
         _animation = GetComponent<AnimationBehaviour>();
 
         PlayerAE.OnJumpEnded += EndJump;
@@ -93,13 +96,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     }
     private void ManageRotation()
     {
-        if (isMoving && !isDancing)
-        {
-            float angle = Mathf.Atan2(onMoveDirection.x, onMoveDirection.z) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(0, angle, 0);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        }
+        if (isMoving && !isDancing) { _rotation.Rotate(onMoveDirection, rotationSpeed); }
     }
 
     // ---------- ANIMATION EVENTS ----------
