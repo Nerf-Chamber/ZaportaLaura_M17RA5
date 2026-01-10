@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +11,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     [SerializeField] private MoveBehaviour _move;
     [SerializeField] private RotationBehaviour _rotation;
     [SerializeField] private AnimationBehaviour _animation;
+    [SerializeField] private CinemachineFreeLook thirdPersonCamera;
     [SerializeField] private int walkingSpeed;
     [SerializeField] private int runningSpeed;
     [SerializeField] private float rotationSpeed;
@@ -69,9 +71,27 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public void OnMove(InputAction.CallbackContext context)
     {
         isMoving = context.performed ? true : false;
-
         Vector2 tempDirection = context.ReadValue<Vector2>();
-        onMoveDirection = new Vector3(tempDirection.x, onMoveDirection.y, tempDirection.y);
+
+        switch (CameraManager.GetCameraZone(thirdPersonCamera, transform.position))
+        {
+            case TPCameraRotationZones.ZoneA:
+                Debug.Log("A");
+                onMoveDirection = new Vector3(-tempDirection.x, onMoveDirection.y, -tempDirection.y);
+                break;
+            case TPCameraRotationZones.ZoneB:
+                Debug.Log("B");
+                onMoveDirection = new Vector3(-tempDirection.y, onMoveDirection.y, tempDirection.x);
+                break;
+            case TPCameraRotationZones.ZoneC:
+                Debug.Log("C");
+                onMoveDirection = new Vector3(tempDirection.x, onMoveDirection.y, tempDirection.y);
+                break;
+            case TPCameraRotationZones.ZoneD:
+                Debug.Log("D");
+                onMoveDirection = new Vector3(tempDirection.y, onMoveDirection.y, -tempDirection.x);
+                break;
+        }
         ManageSpeed();
     }
     public void OnSprint(InputAction.CallbackContext context)
