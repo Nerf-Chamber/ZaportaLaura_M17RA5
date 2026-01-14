@@ -11,7 +11,6 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     [SerializeField] private MoveBehaviour _move;
     [SerializeField] private RotationBehaviour _rotation;
     [SerializeField] private AnimationBehaviour _animation;
-    [SerializeField] private CinemachineFreeLook thirdPersonCamera;
     [SerializeField] private int walkingSpeed;
     [SerializeField] private int runningSpeed;
     [SerializeField] private float rotationSpeed;
@@ -73,31 +72,21 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         isMoving = context.performed ? true : false;
         Vector2 tempDirection = context.ReadValue<Vector2>();
 
-        switch (CameraManager.GetCameraZone(thirdPersonCamera, transform.position))
-        {
-            case TPCameraRotationZones.ZoneA:
-                Debug.Log("A");
-                onMoveDirection = new Vector3(-tempDirection.x, onMoveDirection.y, -tempDirection.y);
-                break;
-            case TPCameraRotationZones.ZoneB:
-                Debug.Log("B");
-                onMoveDirection = new Vector3(-tempDirection.y, onMoveDirection.y, tempDirection.x);
-                break;
-            case TPCameraRotationZones.ZoneC:
-                Debug.Log("C");
-                onMoveDirection = new Vector3(tempDirection.x, onMoveDirection.y, tempDirection.y);
-                break;
-            case TPCameraRotationZones.ZoneD:
-                Debug.Log("D");
-                onMoveDirection = new Vector3(tempDirection.y, onMoveDirection.y, -tempDirection.x);
-                break;
-        }
+        ManageMovement(tempDirection);
         ManageSpeed();
     }
     public void OnSprint(InputAction.CallbackContext context)
     {
         isSprinting = context.performed ? true : false;
         ManageSpeed();
+    }
+    public void OnAim(InputAction.CallbackContext context)
+    {
+        if (!isDancing)
+        {
+            if (context.performed) CameraManager.Instance.SetCameraTopPriority(Cameras.FirstPerson);
+            else CameraManager.Instance.SetCameraTopPriority(Cameras.ThirdPerson);
+        }
     }
 
     // ---------- MANAGE METHODS ----------
@@ -118,9 +107,31 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         if (isMoving && !isDancing) { _rotation.Rotate(onMoveDirection, rotationSpeed); }
     }
+    private void ManageMovement(Vector2 tempDirection)
+    {
+        switch (CameraManager.Instance.GetCameraZone(transform.position))
+        {
+            case CameraRotationZones.ZoneA:
+                Debug.Log("A");
+                onMoveDirection = new Vector3(-tempDirection.x, onMoveDirection.y, -tempDirection.y);
+                break;
+            case CameraRotationZones.ZoneB:
+                Debug.Log("B");
+                onMoveDirection = new Vector3(-tempDirection.y, onMoveDirection.y, tempDirection.x);
+                break;
+            case CameraRotationZones.ZoneC:
+                Debug.Log("C");
+                onMoveDirection = new Vector3(tempDirection.x, onMoveDirection.y, tempDirection.y);
+                break;
+            case CameraRotationZones.ZoneD:
+                Debug.Log("D");
+                onMoveDirection = new Vector3(tempDirection.y, onMoveDirection.y, -tempDirection.x);
+                break;
+        }
+    }
 
     // ---------- ANIMATION EVENTS ----------
-    private void EndDance() => isDancing = false;
     private void EndJump() => isJumping = false;
+    private void EndDance() => isDancing = false;
     private void EndAttack() => isAttacking = false;
 }

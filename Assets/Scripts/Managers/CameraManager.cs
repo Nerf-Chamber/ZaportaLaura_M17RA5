@@ -2,39 +2,73 @@ using UnityEngine;
 using Cinemachine;
 using System;
 
-public enum TPCameraRotationZones
+public enum CameraRotationZones
 {
     ZoneA,
     ZoneB,
     ZoneC,
     ZoneD
 }
+public enum Cameras
+{
+    ThirdPerson,
+    FirstPerson,
+    Dance
+}
 
 public class CameraManager : MonoBehaviour
 {
-    public static TPCameraRotationZones GetCameraZone(CinemachineFreeLook thirdPersonCam, Vector3 playerPos)
+    public static CameraManager Instance;
+
+    [SerializeField] private CinemachineFreeLook thirdPersonCam;
+    [SerializeField] private CinemachineFreeLook firstPersonCam;
+
+    private CinemachineFreeLook currentFreelookCam;
+
+    private void Awake()
     {
-        float radius = thirdPersonCam.m_Orbits[1].m_Radius;
+        Instance = this;
+        currentFreelookCam = thirdPersonCam;
+    }
+
+    public CameraRotationZones GetCameraZone(Vector3 playerPos)
+    {
+        float radius = currentFreelookCam.m_Orbits[1].m_Radius;
         float d = (float)(radius / Math.Sqrt(2.0)); // Distància x,z mitjana del centre de la circumferència al quadrant
 
-        float x = thirdPersonCam.transform.position.x - playerPos.x;
-        float z = thirdPersonCam.transform.position.z - playerPos.z;
+        float x = currentFreelookCam.transform.position.x - playerPos.x;
+        float z = currentFreelookCam.transform.position.z - playerPos.z;
 
         if (z > 0 && (-d <= x && x <= d))
         {
-            return TPCameraRotationZones.ZoneA;
+            return CameraRotationZones.ZoneA;
         }
         else if (x > 0 && (-d < z && z < d))
         {
-            return TPCameraRotationZones.ZoneB;
+            return CameraRotationZones.ZoneB;
         }
         else if (z < 0 && (-d <= x && x <= d))
         {
-            return TPCameraRotationZones.ZoneC;
+            return CameraRotationZones.ZoneC;
         }
         else
         {
-            return TPCameraRotationZones.ZoneD;
+            return CameraRotationZones.ZoneD;
+        }
+    }
+    public void SetCameraTopPriority(Cameras camera)
+    {
+        if (camera == Cameras.ThirdPerson)
+        {
+            currentFreelookCam = thirdPersonCam;
+            thirdPersonCam.Priority = 2;
+            firstPersonCam.Priority = 1;
+        }
+        else if (camera == Cameras.FirstPerson)
+        {
+            currentFreelookCam = firstPersonCam;
+            firstPersonCam.Priority = 2;
+            thirdPersonCam.Priority = 1;
         }
     }
 }
