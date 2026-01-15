@@ -25,6 +25,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     private bool isJumping = false;
     private bool isAttacking = false;
     private bool isDancing = false;
+    private bool isAiming = false;
 
     private void Awake()
     {
@@ -76,6 +77,13 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         isMoving = context.performed ? true : false;
         Vector2 tempDirection = context.ReadValue<Vector2>();
 
+        // Impediment de moviment en primera persona cap endarrere
+        if (tempDirection.y < 0 && isAiming)
+        {
+            tempDirection = new Vector2(tempDirection.x, 0);
+            if (tempDirection.x == 0) isMoving = false;
+        }
+
         ManageMovement(tempDirection);
         ManageSpeed();
     }
@@ -88,8 +96,16 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         if (!isDancing)
         {
-            if (context.performed) CameraManager.Instance.SetCameraTopPriority(Cameras.FirstPerson);
-            else CameraManager.Instance.SetCameraTopPriority(Cameras.ThirdPerson);
+            if (context.performed)
+            {
+                CameraManager.Instance.SetCameraTopPriority(Cameras.FirstPerson);
+                isAiming = true;
+            }
+            else
+            {
+                CameraManager.Instance.SetCameraTopPriority(Cameras.ThirdPerson);
+                isAiming = false;
+            }
         }
     }
 

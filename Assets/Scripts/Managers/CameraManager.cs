@@ -1,6 +1,7 @@
-using UnityEngine;
 using Cinemachine;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public enum CameraRotationZones
 {
@@ -24,21 +25,24 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private CinemachineFreeLook firstPersonCam;
     [SerializeField] private CinemachineVirtualCamera danceCam;
 
-    private CinemachineFreeLook currentFreelookCam;
+    private Dictionary<Cameras, CinemachineVirtualCameraBase> camMap;
 
     private void Awake()
     {
         Instance = this;
-        currentFreelookCam = thirdPersonCam;
+        camMap = new Dictionary<Cameras, CinemachineVirtualCameraBase>{
+            { Cameras.ThirdPerson, thirdPersonCam },
+            { Cameras.FirstPerson, firstPersonCam },
+            { Cameras.Dance, danceCam }};
     }
 
     public CameraRotationZones GetCameraZone(Vector3 playerPos)
     {
-        float radius = currentFreelookCam.m_Orbits[1].m_Radius;
+        float radius = thirdPersonCam.m_Orbits[1].m_Radius;
         float d = (float)(radius / Math.Sqrt(2.0)); // Distància x,z mitjana del centre de la circumferència al quadrant
 
-        float x = currentFreelookCam.transform.position.x - playerPos.x;
-        float z = currentFreelookCam.transform.position.z - playerPos.z;
+        float x = thirdPersonCam.transform.position.x - playerPos.x;
+        float z = thirdPersonCam.transform.position.z - playerPos.z;
 
         if (z > 0 && (-d <= x && x <= d))
         {
@@ -59,26 +63,7 @@ public class CameraManager : MonoBehaviour
     }
     public void SetCameraTopPriority(Cameras camera)
     {
-        if (camera == Cameras.ThirdPerson)
-        {
-            currentFreelookCam = thirdPersonCam;
-            thirdPersonCam.Priority = 2;
-            firstPersonCam.Priority = 1;
-            danceCam.Priority = 1;
-        }
-        else if (camera == Cameras.FirstPerson)
-        {
-            currentFreelookCam = firstPersonCam;
-            firstPersonCam.Priority = 2;
-            thirdPersonCam.Priority = 1;
-            danceCam.Priority = 1;
-        }
-        else
-        {
-            currentFreelookCam = thirdPersonCam;
-            danceCam.Priority = 2;
-            firstPersonCam.Priority = 1;
-            thirdPersonCam.Priority = 1;
-        }
+        foreach (var cam in camMap.Values) cam.Priority = 1;
+        camMap[camera].Priority = 2;
     }
 }
