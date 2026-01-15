@@ -65,7 +65,11 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     }
     public void OnDance(InputAction.CallbackContext context)
     {
-        isDancing = true;
+        if (!isDancing)
+        {
+            isDancing = true;
+            CameraManager.Instance.SetCameraTopPriority(Cameras.Dance);
+        }
     }
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -132,6 +136,10 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     // ---------- ANIMATION EVENTS ----------
     private void EndJump() => isJumping = false;
-    private void EndDance() => isDancing = false;
+    private void EndDance()
+    {
+        isDancing = false;
+        CameraManager.Instance.SetCameraTopPriority(Cameras.ThirdPerson);
+    }
     private void EndAttack() => isAttacking = false;
 }

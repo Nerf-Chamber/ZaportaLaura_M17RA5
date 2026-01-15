@@ -22,6 +22,7 @@ public class CameraManager : MonoBehaviour
 
     [SerializeField] private CinemachineFreeLook thirdPersonCam;
     [SerializeField] private CinemachineFreeLook firstPersonCam;
+    [SerializeField] private CinemachineVirtualCamera danceCam;
 
     private CinemachineFreeLook currentFreelookCam;
 
@@ -63,11 +64,20 @@ public class CameraManager : MonoBehaviour
             currentFreelookCam = thirdPersonCam;
             thirdPersonCam.Priority = 2;
             firstPersonCam.Priority = 1;
+            danceCam.Priority = 1;
         }
         else if (camera == Cameras.FirstPerson)
         {
             currentFreelookCam = firstPersonCam;
             firstPersonCam.Priority = 2;
+            thirdPersonCam.Priority = 1;
+            danceCam.Priority = 1;
+        }
+        else
+        {
+            currentFreelookCam = thirdPersonCam;
+            danceCam.Priority = 2;
+            firstPersonCam.Priority = 1;
             thirdPersonCam.Priority = 1;
         }
     }
