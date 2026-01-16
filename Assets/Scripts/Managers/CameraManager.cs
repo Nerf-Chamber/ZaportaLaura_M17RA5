@@ -26,10 +26,13 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera danceCam;
 
     private Dictionary<Cameras, CinemachineVirtualCameraBase> camMap;
+    private CinemachineFreeLook currentFreelookCam;
 
     private void Awake()
     {
         Instance = this;
+        currentFreelookCam = thirdPersonCam;
+
         camMap = new Dictionary<Cameras, CinemachineVirtualCameraBase>{
             { Cameras.ThirdPerson, thirdPersonCam },
             { Cameras.FirstPerson, firstPersonCam },
@@ -38,11 +41,11 @@ public class CameraManager : MonoBehaviour
 
     public CameraRotationZones GetCameraZone(Vector3 playerPos)
     {
-        float radius = thirdPersonCam.m_Orbits[1].m_Radius;
+        float radius = currentFreelookCam.m_Orbits[1].m_Radius;
         float d = (float)(radius / Math.Sqrt(2.0)); // Distància x,z mitjana del centre de la circumferència al quadrant
 
-        float x = thirdPersonCam.transform.position.x - playerPos.x;
-        float z = thirdPersonCam.transform.position.z - playerPos.z;
+        float x = currentFreelookCam.transform.position.x - playerPos.x;
+        float z = currentFreelookCam.transform.position.z - playerPos.z;
 
         if (z > 0 && (-d <= x && x <= d))
         {
@@ -65,5 +68,7 @@ public class CameraManager : MonoBehaviour
     {
         foreach (var cam in camMap.Values) cam.Priority = 1;
         camMap[camera].Priority = 2;
+
+        if (camMap[camera] is CinemachineFreeLook) currentFreelookCam = (CinemachineFreeLook)camMap[camera];
     }
 }
