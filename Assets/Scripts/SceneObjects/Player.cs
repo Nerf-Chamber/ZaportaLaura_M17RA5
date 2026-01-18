@@ -14,10 +14,12 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     [SerializeField] private int walkingSpeed;
     [SerializeField] private int runningSpeed;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private float aimRotationSpeed;
 
     private InputSystem_Actions inputActions;
 
     private Vector3 onMoveDirection = Vector3.zero;
+    private Vector2 tempDirection = Vector2.zero;
     private int speed = 0;
 
     private bool isMoving = false;
@@ -25,6 +27,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     private bool isJumping = false;
     private bool isAttacking = false;
     private bool isDancing = false;
+    private bool isAiming = false;
 
     private void Awake()
     {
@@ -48,6 +51,9 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         _move.Move(onMoveDirection, speed);
         ManageAnimationStates();
         ManageRotation();
+        ManageFirstPersonRotation();
+
+        if (isAiming) ManageMovementFirstPerson(tempDirection);
     }
 
     // ---------- INTERFACE IMPLEMENTATION ----------
@@ -73,10 +79,10 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     }
     public void OnMove(InputAction.CallbackContext context)
     {
-        isMoving = context.performed ? true : false;
-        Vector2 tempDirection = context.ReadValue<Vector2>();
+        tempDirection = context.ReadValue<Vector2>();
 
-        ManageMovement(tempDirection);
+        if (!isAiming) ManageMovementThirdPerson(tempDirection);
+
         ManageSpeed();
     }
     public void OnSprint(InputAction.CallbackContext context)
@@ -88,8 +94,16 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         if (!isDancing)
         {
-            if (context.performed) { CameraManager.Instance.SetCameraTopPriority(Cameras.FirstPerson); }
-            else { CameraManager.Instance.SetCameraTopPriority(Cameras.ThirdPerson); }
+            if (context.performed) 
+            { 
+                CameraManager.Instance.SetCameraTopPriority(Cameras.FirstPerson);
+                isAiming = true;
+            }
+            else 
+            { 
+                CameraManager.Instance.SetCameraTopPriority(Cameras.ThirdPerson); 
+                isAiming = false;
+            }
         }
     }
 
@@ -111,8 +125,21 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         if (isMoving && !isDancing) { _rotation.Rotate(onMoveDirection, rotationSpeed); }
     }
-    private void ManageMovement(Vector2 tempDirection)
+    private void ManageFirstPersonRotation()
     {
+        if (isAiming)
+        {
+            float rotationY = CameraManager.Instance.GetFPCamRotationXValue();
+            Vector3 currentEuler = transform.eulerAngles;
+
+            Quaternion targetRotation = Quaternion.Euler(currentEuler.x, rotationY, currentEuler.z);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * aimRotationSpeed);
+        }
+    }
+    private void ManageMovementThirdPerson(Vector2 tempDirection)
+    {
+        isMoving = tempDirection != Vector2.zero ? true : false;
+
         switch (CameraManager.Instance.GetCameraZone(transform.position))
         {
             case CameraRotationZones.ZoneA:
@@ -131,6 +158,29 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
                 Debug.Log("D");
                 onMoveDirection = new Vector3(tempDirection.y, onMoveDirection.y, -tempDirection.x);
                 break;
+        }
+    }
+    private void ManageMovementFirstPerson(Vector2 tempDirection)
+    {
+        // Impediment de moviment en primera persona cap endarrere
+        // If I press first S and then D for example the player doesn't move xd
+        if (tempDirection.y < 0 && tempDirection.x == 0) isMoving = false;
+        else if (tempDirection != Vector2.zero)
+        {
+            isMoving = true;
+
+            Vector3 fpCamPosition = CameraManager.Instance.GetFPCamPosition();
+            Vector3 camPlayerVector = new Vector3(fpCamPosition.x - transform.position.x, onMoveDirection.y, fpCamPosition.z - transform.position.z);
+
+            if (tempDirection.x > 0) { camPlayerVector = Quaternion.Euler(0f, 45, 0f) * camPlayerVector; }
+            else if (tempDirection.x < 0) { camPlayerVector = Quaternion.Euler(0f, -45, 0f) * camPlayerVector; }
+
+            onMoveDirection = -1 * camPlayerVector.normalized;
+        }
+        else
+        {
+            isMoving = false;
+            onMoveDirection = tempDirection;
         }
     }
 

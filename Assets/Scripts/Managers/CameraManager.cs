@@ -67,4 +67,6 @@ public class CameraManager : MonoBehaviour
         foreach (var cam in camMap.Values) cam.Priority = 1;
         camMap[camera].Priority = 2;
     }
+    public float GetFPCamRotationXValue() { return firstPersonCam.m_XAxis.Value; }
+    public Vector3 GetFPCamPosition() { return firstPersonCam.transform.position; }
 }
