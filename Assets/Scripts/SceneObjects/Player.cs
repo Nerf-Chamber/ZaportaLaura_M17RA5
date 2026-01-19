@@ -50,6 +50,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         _move.Move(onMoveDirection, speed);
         ManageAnimationStates();
+        ManageSpeed();
         ManageRotation();
         ManageFirstPersonRotation();
 
@@ -82,8 +83,6 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         tempDirection = context.ReadValue<Vector2>();
 
         if (!isAiming) ManageMovementThirdPerson(tempDirection);
-
-        ManageSpeed();
     }
     public void OnSprint(InputAction.CallbackContext context)
     {
@@ -162,25 +161,21 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     }
     private void ManageMovementFirstPerson(Vector2 tempDirection)
     {
-        // Impediment de moviment en primera persona cap endarrere
-        // If I press first S and then D for example the player doesn't move xd
-        if (tempDirection.y < 0 && tempDirection.x == 0) isMoving = false;
-        else if (tempDirection != Vector2.zero)
+        if (tempDirection.y < 0 || tempDirection == Vector2.zero)
+        {
+            isMoving = false;
+            onMoveDirection = Vector2.zero;
+        }
+        else
         {
             isMoving = true;
 
             Vector3 fpCamPosition = CameraManager.Instance.GetFPCamPosition();
             Vector3 camPlayerVector = new Vector3(fpCamPosition.x - transform.position.x, onMoveDirection.y, fpCamPosition.z - transform.position.z);
 
-            if (tempDirection.x > 0) { camPlayerVector = Quaternion.Euler(0f, 45, 0f) * camPlayerVector; }
-            else if (tempDirection.x < 0) { camPlayerVector = Quaternion.Euler(0f, -45, 0f) * camPlayerVector; }
+            camPlayerVector = Quaternion.Euler(0f, GetAngleFirstPerson(tempDirection), 0f) * camPlayerVector;
 
             onMoveDirection = -1 * camPlayerVector.normalized;
-        }
-        else
-        {
-            isMoving = false;
-            onMoveDirection = tempDirection;
         }
     }
 
@@ -192,4 +187,20 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         CameraManager.Instance.SetCameraTopPriority(Cameras.ThirdPerson);
     }
     private void EndAttack() => isAttacking = false;
+
+    // ---------- UTILS ----------
+    private float GetAngleFirstPerson(Vector2 tempDirection)
+    {
+        if (tempDirection.x > 0)
+        {
+            if (tempDirection.y > 0) return 45f;
+            return 90f;
+        }
+        else if (tempDirection.x < 0)
+        {
+            if (tempDirection.y > 0) return -45f;
+            return -90f;
+        }
+        return 0f;
+    }
 }
