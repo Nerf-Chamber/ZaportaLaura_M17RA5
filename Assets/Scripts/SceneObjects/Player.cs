@@ -87,7 +87,6 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public void OnSprint(InputAction.CallbackContext context)
     {
         isSprinting = context.performed ? true : false;
-        ManageSpeed();
     }
     public void OnAim(InputAction.CallbackContext context)
     {
@@ -114,6 +113,8 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         _animation.SetJumpState(isJumping);
         _animation.SetAttackState(isAttacking);
         _animation.SetDanceState(isDancing);
+        _animation.SetAimState(isAiming && !isAttacking);
+        _animation.SetCurrentLayer(isAiming || isAttacking);
     }
     private void ManageSpeed()
     {
