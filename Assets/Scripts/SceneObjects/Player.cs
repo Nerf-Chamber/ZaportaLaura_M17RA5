@@ -113,7 +113,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         _animation.SetJumpState(isJumping);
         _animation.SetAttackState(isAttacking);
         _animation.SetDanceState(isDancing);
-        _animation.SetAimState(isAiming && !isAttacking);
+        _animation.SetAimState(isAiming);
         _animation.SetCurrentLayer(isAiming || isAttacking);
     }
     private void ManageSpeed()
