@@ -54,21 +54,16 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         ManageFirstPersonRotation();
 
         if (isAiming) ManageMovementFirstPerson(tempDirection);
+        else ManageMovementThirdPerson(tempDirection);
     }
 
     // ---------- INTERFACE IMPLEMENTATION ----------
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-        isAttacking = isDancing ? false : true;
-    }
+    public void OnAttack(InputAction.CallbackContext context) => isAttacking = isDancing? false : true;
     public void OnInteract(InputAction.CallbackContext context)
     {
         throw new System.NotImplementedException();
     }
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        isJumping = isDancing ? false : true;
-    }
+    public void OnJump(InputAction.CallbackContext context) => isJumping = isDancing ? false : true;
     public void OnDance(InputAction.CallbackContext context)
     {
         if (!isDancing)
@@ -77,30 +72,16 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
             CameraManager.Instance.SetCameraTopPriority(Cameras.Dance);
         }
     }
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        tempDirection = context.ReadValue<Vector2>();
-
-        if (!isAiming) ManageMovementThirdPerson(tempDirection);
-    }
-    public void OnSprint(InputAction.CallbackContext context)
-    {
-        isSprinting = context.performed ? true : false;
-    }
+    public void OnMove(InputAction.CallbackContext context) => tempDirection = context.ReadValue<Vector2>();
+    public void OnSprint(InputAction.CallbackContext context) => isSprinting = context.performed ? true : false;
     public void OnAim(InputAction.CallbackContext context)
     {
         if (!isDancing)
         {
-            if (context.performed) 
-            { 
-                CameraManager.Instance.SetCameraTopPriority(Cameras.FirstPerson);
-                isAiming = true;
-            }
-            else 
-            { 
-                CameraManager.Instance.SetCameraTopPriority(Cameras.ThirdPerson); 
-                isAiming = false;
-            }
+            Cameras cam = context.performed ? Cameras.FirstPerson : Cameras.ThirdPerson;
+            isAiming = context.performed ? true : false;
+
+            CameraManager.Instance.SetCameraTopPriority(cam);
         }
     }
 
@@ -128,7 +109,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         if (isAiming)
         {
-            float rotationY = CameraManager.Instance.GetFPCamRotationXValue();
+            float rotationY = CameraManager.Instance.GetCamRotationXValue(Cameras.FirstPerson);
             Vector3 currentEuler = transform.eulerAngles;
 
             Quaternion targetRotation = Quaternion.Euler(currentEuler.x, rotationY, currentEuler.z);
@@ -139,24 +120,14 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         isMoving = tempDirection != Vector2.zero ? true : false;
 
-        switch (CameraManager.Instance.GetCameraZone(transform.position))
+        if (isMoving)
         {
-            case CameraRotationZones.ZoneA:
-                Debug.Log("A");
-                onMoveDirection = new Vector3(-tempDirection.x, onMoveDirection.y, -tempDirection.y);
-                break;
-            case CameraRotationZones.ZoneB:
-                Debug.Log("B");
-                onMoveDirection = new Vector3(-tempDirection.y, onMoveDirection.y, tempDirection.x);
-                break;
-            case CameraRotationZones.ZoneC:
-                Debug.Log("C");
-                onMoveDirection = new Vector3(tempDirection.x, onMoveDirection.y, tempDirection.y);
-                break;
-            case CameraRotationZones.ZoneD:
-                Debug.Log("D");
-                onMoveDirection = new Vector3(tempDirection.y, onMoveDirection.y, -tempDirection.x);
-                break;
+            Vector3 tpCamPosition = CameraManager.Instance.GetCamPosition(Cameras.ThirdPerson);
+            Vector3 camPlayerVector = new Vector3(tpCamPosition.x - transform.position.x, onMoveDirection.y, tpCamPosition.z - transform.position.z);
+
+            camPlayerVector = Quaternion.Euler(0f, CameraManager.Instance.GetAngleThirdPerson(tempDirection), 0f) * camPlayerVector;
+
+            onMoveDirection = -1 * camPlayerVector.normalized;
         }
     }
     private void ManageMovementFirstPerson(Vector2 tempDirection)
@@ -170,10 +141,10 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         {
             isMoving = true;
 
-            Vector3 fpCamPosition = CameraManager.Instance.GetFPCamPosition();
+            Vector3 fpCamPosition = CameraManager.Instance.GetCamPosition(Cameras.FirstPerson);
             Vector3 camPlayerVector = new Vector3(fpCamPosition.x - transform.position.x, onMoveDirection.y, fpCamPosition.z - transform.position.z);
 
-            camPlayerVector = Quaternion.Euler(0f, GetAngleFirstPerson(tempDirection), 0f) * camPlayerVector;
+            camPlayerVector = Quaternion.Euler(0f, CameraManager.Instance.GetAngleFirstPerson(tempDirection), 0f) * camPlayerVector;
 
             onMoveDirection = -1 * camPlayerVector.normalized;
         }
@@ -187,20 +158,4 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         CameraManager.Instance.SetCameraTopPriority(Cameras.ThirdPerson);
     }
     private void EndAttack() => isAttacking = false;
-
-    // ---------- UTILS ----------
-    private float GetAngleFirstPerson(Vector2 tempDirection)
-    {
-        if (tempDirection.x > 0)
-        {
-            if (tempDirection.y > 0) return 45f;
-            return 90f;
-        }
-        else if (tempDirection.x < 0)
-        {
-            if (tempDirection.y > 0) return -45f;
-            return -90f;
-        }
-        return 0f;
-    }
 }

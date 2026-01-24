@@ -1,15 +1,7 @@
 using Cinemachine;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
-public enum CameraRotationZones
-{
-    ZoneA,
-    ZoneB,
-    ZoneC,
-    ZoneD
-}
 public enum Cameras
 {
     ThirdPerson,
@@ -36,37 +28,28 @@ public class CameraManager : MonoBehaviour
             { Cameras.FirstPerson, firstPersonCam },
             { Cameras.Dance, danceCam }};
     }
-
-    public CameraRotationZones GetCameraZone(Vector3 playerPos)
-    {
-        float radius = thirdPersonCam.m_Orbits[1].m_Radius;
-        float d = (float)(radius / Math.Sqrt(2.0)); // Distància x,z mitjana del centre de la circumferència al quadrant
-
-        float x = thirdPersonCam.transform.position.x - playerPos.x;
-        float z = thirdPersonCam.transform.position.z - playerPos.z;
-
-        if (z > 0 && (-d <= x && x <= d))
-        {
-            return CameraRotationZones.ZoneA;
-        }
-        else if (x > 0 && (-d < z && z < d))
-        {
-            return CameraRotationZones.ZoneB;
-        }
-        else if (z < 0 && (-d <= x && x <= d))
-        {
-            return CameraRotationZones.ZoneC;
-        }
-        else
-        {
-            return CameraRotationZones.ZoneD;
-        }
-    }
     public void SetCameraTopPriority(Cameras camera)
     {
         foreach (var cam in camMap.Values) cam.Priority = 1;
         camMap[camera].Priority = 2;
     }
-    public float GetFPCamRotationXValue() { return firstPersonCam.m_XAxis.Value; }
-    public Vector3 GetFPCamPosition() { return firstPersonCam.transform.position; }
+    public float GetCamRotationXValue(Cameras camera) 
+    {
+        if (camMap.TryGetValue(camera, out var cam) && cam is CinemachineFreeLook freeLook) return freeLook.m_XAxis.Value;
+        return 0f;
+    }
+    public Vector3 GetCamPosition(Cameras camera) 
+    { 
+        return camMap[camera].transform.position;
+    }
+    public float GetAngleThirdPerson(Vector2 tempDirection)
+    {
+        if (tempDirection != Vector2.zero) return Mathf.Atan2(tempDirection.x, tempDirection.y) * Mathf.Rad2Deg;
+        return 0f;
+    }
+    public float GetAngleFirstPerson(Vector2 tempDirection)
+    {
+        if (tempDirection.y < 0 || tempDirection == Vector2.zero) return 0f;
+        else return Mathf.Atan2(tempDirection.x, tempDirection.y) * Mathf.Rad2Deg;
+    }
 }
