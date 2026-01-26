@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,6 +31,8 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     private bool isAttacking = false;
     private bool isDancing = false;
     private bool isAiming = false;
+
+    public static event Action<Vector3> OnDropItem;
 
     private void Awake()
     {
@@ -64,11 +67,20 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public void OnAttack(InputAction.CallbackContext context) => isAttacking = isDancing? false : true;
     public void OnInteract(InputAction.CallbackContext context)
     {
-        Debug.Log("PIJAMADA REAL");
-        if (context.performed && nearbyInteractable != null)
-            Debug.Log("rawr");
+        if (!context.performed) return;
+
+        if (currentItem != null)
+        {
+            DropCurrentItem();
+            return;
+        }
+
+        if (nearbyInteractable != null)
+        {
             nearbyInteractable.Interact(this);
+        }
     }
+
     public void OnJump(InputAction.CallbackContext context) => isJumping = isDancing ? false : true;
     public void OnDance(InputAction.CallbackContext context)
     {
@@ -174,7 +186,13 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         currentItem.transform.SetParent(handSocket);
         currentItem.transform.localPosition = Vector3.zero;
         currentItem.transform.localRotation = Quaternion.identity;
-        currentItem.transform.localScale = Vector3.one;
+        currentItem.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+    }
+    private void DropCurrentItem() 
+    { 
+        currentItem.transform.SetParent(null); 
+        currentItem = null; 
+        OnDropItem?.Invoke(transform.position);
     }
     private void OnTriggerEnter(Collider collider)
     {
