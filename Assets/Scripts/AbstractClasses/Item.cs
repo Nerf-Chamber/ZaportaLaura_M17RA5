@@ -23,6 +23,8 @@ public abstract class Item : MonoBehaviour, IInteractable
     private void Update() => FloatUpDown();
     private void RestoreState(Vector3 playerPos)
     {
+        if (TryGetComponent<Collider>(out var col)) { col.enabled = true; }
+        
         pos = playerPos;
         isCollected = false;
         transform.SetPositionAndRotation(playerPos, startRotation);
@@ -37,6 +39,8 @@ public abstract class Item : MonoBehaviour, IInteractable
     }
     public void Interact(Player player)
     {
+        if (TryGetComponent<Collider>(out var col)) { col.enabled = false; }
+    
         isCollected = true;
         player.SetCurrentItem(this);
     }
