@@ -68,8 +68,16 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public void OnInteract(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        if (currentItem != null) { DropCurrentItem(); return; }
-        if (nearbyInteractable != null) { nearbyInteractable.Interact(this); }
+        if (nearbyInteractable != null) 
+        {
+            nearbyInteractable.Interact(this); 
+            return; 
+        }
+        if (currentItem != null) 
+        { 
+            DropCurrentItem(); 
+            return; 
+        }
     }
 
     public void OnJump(InputAction.CallbackContext context) => isJumping = isDancing ? false : true;
@@ -179,6 +187,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         currentItem.transform.localRotation = Quaternion.identity;
         currentItem.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
     }
+    public Item? GetCurrentItem() { return currentItem; }
     private void DropCurrentItem() 
     { 
         currentItem.transform.SetParent(null); 

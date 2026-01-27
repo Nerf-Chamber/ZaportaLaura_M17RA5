@@ -1,16 +1,17 @@
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class Door : MonoBehaviour, IInteractable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Interact(Player player)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Item playerItem = player.GetCurrentItem();
+        if (playerItem is Key key)
+        {
+            if (key.associatedDoor == this) 
+            { 
+                // Here code for rotating door
+                Debug.Log("Rotate door"); 
+            }
+        }
     }
 }
