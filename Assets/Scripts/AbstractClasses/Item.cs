@@ -32,7 +32,7 @@ public abstract class Item : MonoBehaviour, IInteractable
         if (!isCollected)
         {
             float newY = pos.y + Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
-            transform.position = new Vector3(pos.x, startY, pos.z);
+            transform.position = new Vector3(pos.x, newY, pos.z);
         }
     }
     public void Interact(Player player)
