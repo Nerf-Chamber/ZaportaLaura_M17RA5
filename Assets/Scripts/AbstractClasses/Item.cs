@@ -45,9 +45,12 @@ public abstract class Item : MonoBehaviour, IInteractable
     }
     public void Interact(Player player)
     {
-        if (TryGetComponent<Collider>(out var col)) { col.enabled = false; }
-    
-        isCollected = true;
-        player.SetCurrentItem(this);
+        if (player.GetCurrentItem() == null)
+        {
+            if (TryGetComponent<Collider>(out var col)) { col.enabled = false; }
+
+            isCollected = true;
+            player.SetCurrentItem(this);
+        }
     }
 }
