@@ -24,7 +24,6 @@ public abstract class Item : MonoBehaviour, IInteractable
     private void RestoreState(Vector3 playerPos)
     {
         pos = playerPos;
-        GetComponent<BoxCollider>().enabled = true;
         isCollected = false;
         transform.SetPositionAndRotation(playerPos, startRotation);
     }
@@ -38,7 +37,6 @@ public abstract class Item : MonoBehaviour, IInteractable
     }
     public void Interact(Player player)
     {
-        GetComponent<BoxCollider>().enabled = false;
         isCollected = true;
         player.SetCurrentItem(this);
     }
