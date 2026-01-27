@@ -68,17 +68,8 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public void OnInteract(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-
-        if (currentItem != null)
-        {
-            DropCurrentItem();
-            return;
-        }
-
-        if (nearbyInteractable != null)
-        {
-            nearbyInteractable.Interact(this);
-        }
+        if (currentItem != null) { DropCurrentItem(); return; }
+        if (nearbyInteractable != null) { nearbyInteractable.Interact(this); }
     }
 
     public void OnJump(InputAction.CallbackContext context) => isJumping = isDancing ? false : true;
