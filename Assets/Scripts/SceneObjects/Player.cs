@@ -176,8 +176,6 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public void SetCurrentItem(Item item)
     {
         currentItem = item;
-        Debug.Log("Item assignat: " + item.name);
-
         currentItem.transform.SetParent(handSocket);
         currentItem.transform.localPosition = Vector3.zero;
         currentItem.transform.localRotation = Quaternion.identity;
