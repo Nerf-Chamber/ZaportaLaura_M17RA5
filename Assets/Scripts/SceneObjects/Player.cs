@@ -54,7 +54,12 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         PlayerAE.OnAttackEnded += EndAttack;
         PlayerAE.OnDanceEnded += EndDance;
     }
-    private void Start() => SavingManager.Instance.LoadPlayer(this);
+    private void Start()
+    {
+        _animation.enabled = false;
+        SavingManager.Instance.LoadPlayer(this);
+        _animation.enabled = true;
+    }
     private void OnEnable() => inputActions.Enable();
     private void OnDisable() => inputActions.Disable();
 
@@ -193,6 +198,8 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     // ---------- ITEM INTERACTION ----------
     public void SetCurrentItem(Item item)
     {
+        item.transform.SetParent(null);
+
         currentItem = item;
         currentItem.transform.SetParent(handSocket);
         currentItem.transform.localPosition = Vector3.zero;

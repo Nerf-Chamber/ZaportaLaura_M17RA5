@@ -59,13 +59,17 @@ public class SavingManager : MonoBehaviour
     }
     public void LoadKey(Item key)
     {
+        // Contradicció entre LoadKey i LoadPlayer
         if (!PlayerPrefs.HasKey("KeySave")) return;
 
-        string json = PlayerPrefs.GetString("KeySave");
-        ItemData data = JsonUtility.FromJson<ItemData>(json);
+        if (!key.GetIsCollected())
+        {
+            string json = PlayerPrefs.GetString("KeySave");
+            ItemData data = JsonUtility.FromJson<ItemData>(json);
 
-        key.transform.position = data.position;
-        key.transform.rotation = data.rotation;
+            key.transform.position = data.position;
+            key.transform.rotation = data.rotation;
+        }
     }
     private Item FindWorldItem(string itemId)
     {
