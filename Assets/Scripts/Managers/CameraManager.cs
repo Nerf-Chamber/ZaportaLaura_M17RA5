@@ -16,18 +16,24 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private CinemachineFreeLook thirdPersonCam;
     [SerializeField] private CinemachineFreeLook firstPersonCam;
     [SerializeField] private CinemachineVirtualCamera danceCam;
+    [SerializeField] private Camera minimapCam;
+    [SerializeField] private GameObject player;
 
     private Dictionary<Cameras, CinemachineVirtualCameraBase> camMap;
+    private float minimapCamInitialY;
 
     private void Awake()
     {
         Instance = this;
+        minimapCamInitialY = minimapCam.transform.position.y;
 
         camMap = new Dictionary<Cameras, CinemachineVirtualCameraBase>{
             { Cameras.ThirdPerson, thirdPersonCam },
             { Cameras.FirstPerson, firstPersonCam },
             { Cameras.Dance, danceCam }};
     }
+    private void Update() => UpdateMinimapCamera();
+
     public void SetCameraTopPriority(Cameras camera)
     {
         foreach (var cam in camMap.Values) cam.Priority = 1;
@@ -51,5 +57,12 @@ public class CameraManager : MonoBehaviour
     {
         if (tempDirection.y < 0 || tempDirection == Vector2.zero) return 0f;
         else return Mathf.Atan2(tempDirection.x, tempDirection.y) * Mathf.Rad2Deg;
+    }
+    private void UpdateMinimapCamera()
+    {
+        minimapCam.transform.position = new Vector3(
+            player.transform.position.x, 
+            minimapCamInitialY + player.transform.position.y,
+            player.transform.position.z);
     }
 }
