@@ -3,12 +3,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(MoveBehaviour))]
+[RequireComponent(typeof(JumpBehaviour))]
 [RequireComponent(typeof(RotationBehaviour))]
 [RequireComponent(typeof(AnimationBehaviour))]
 
 public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 {
     [SerializeField] private MoveBehaviour _move;
+    [SerializeField] private JumpBehaviour _jump;
     [SerializeField] private RotationBehaviour _rotation;
     [SerializeField] private AnimationBehaviour _animation;
     [SerializeField] private Transform handSocket;
@@ -23,6 +25,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     private Vector3 onMoveDirection = Vector3.zero;
     private Vector2 tempDirection = Vector2.zero;
+    private int jumpForce = 30;
     private int speed = 0;
 
     private bool isMoving = false;
@@ -41,6 +44,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         inputActions.Player.SetCallbacks(this);
 
         _move = GetComponent<MoveBehaviour>();
+        _jump = GetComponent<JumpBehaviour>();
         _rotation = GetComponent<RotationBehaviour>();
         _animation = GetComponent<AnimationBehaviour>();
 
@@ -81,7 +85,14 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         if (currentItem != null)
             DropCurrentItem();
     }
-    public void OnJump(InputAction.CallbackContext context) => isJumping = isDancing ? false : true;
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (_jump.IsGrounded(transform.position) && !isDancing && !isJumping)
+        {
+            _jump.Jump(jumpForce);
+            isJumping = true;
+        }
+    }
     public void OnDance(InputAction.CallbackContext context)
     {
         if (!isDancing)
