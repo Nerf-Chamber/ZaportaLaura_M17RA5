@@ -25,6 +25,8 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     private Vector3 onMoveDirection = Vector3.zero;
     private Vector2 tempDirection = Vector2.zero;
+
+    // Jump force fixa
     private int jumpForce = 30;
     private int speed = 0;
 
