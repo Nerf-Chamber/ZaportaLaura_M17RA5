@@ -2,6 +2,7 @@ using UnityEngine;
 
 public abstract class Item : MonoBehaviour, IInteractable
 {
+    public string itemId;
     public float floatAmplitude = 0.25f;
     public float floatFrequency = 1f;
     public float rotationSpeed = 45;
@@ -14,12 +15,14 @@ public abstract class Item : MonoBehaviour, IInteractable
     private void Awake()
     {
         Player.OnDropItem += RestoreState;
+        Player.OnSavePressed += SaveItem;
         startY = transform.position.y;
     }
     private void Start() 
     {
+        if (this is Key) { SavingManager.Instance.LoadKey(this); }
         pos = transform.position;
-        startRotation = transform.rotation;
+        startRotation = new Quaternion();
     }
     private void Update() => FloatUpDown();
     private void RestoreState(Vector3 playerPos)
@@ -33,6 +36,8 @@ public abstract class Item : MonoBehaviour, IInteractable
             transform.SetPositionAndRotation(playerPos, startRotation);
         }
     }
+    // En un inventari s'hauria d'escalar per tots els items :)
+    private void SaveItem() { if (!isCollected && this is Key) SavingManager.Instance.SaveKey(this); }
     protected void FloatUpDown()
     {
         if (!isCollected)
@@ -52,5 +57,17 @@ public abstract class Item : MonoBehaviour, IInteractable
             isCollected = true;
             player.SetCurrentItem(this);
         }
+    }
+    public bool GetIsCollected() { return isCollected; }
+    public void SetAsEquipped()
+    {
+        isCollected = true;
+        if (TryGetComponent<Collider>(out var col)) col.enabled = false;
+    }
+    public void DisableInWorld()
+    {
+        isCollected = true;
+        if (TryGetComponent<Collider>(out var col)) col.enabled = false;
+        gameObject.SetActive(false);
     }
 }

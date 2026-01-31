@@ -33,6 +33,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     private bool isAiming = false;
 
     public static event Action<Vector3> OnDropItem;
+    public static event Action OnSavePressed;
 
     private void Awake()
     {
@@ -47,7 +48,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         PlayerAE.OnAttackEnded += EndAttack;
         PlayerAE.OnDanceEnded += EndDance;
     }
-
+    private void Start() => SavingManager.Instance.LoadPlayer(this);
     private void OnEnable() => inputActions.Enable();
     private void OnDisable() => inputActions.Disable();
 
@@ -65,6 +66,11 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     // ---------- INTERFACE IMPLEMENTATION ----------
     public void OnAttack(InputAction.CallbackContext context) => isAttacking = isDancing? false : true;
+    public void OnSave(InputAction.CallbackContext context)
+    {
+        SavingManager.Instance.SavePlayer(this);
+        OnSavePressed?.Invoke();
+    }
     public void OnInteract(InputAction.CallbackContext context)
     {
         if (nearbyInteractable != null)
@@ -75,7 +81,6 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         if (currentItem != null)
             DropCurrentItem();
     }
-
     public void OnJump(InputAction.CallbackContext context) => isJumping = isDancing ? false : true;
     public void OnDance(InputAction.CallbackContext context)
     {
