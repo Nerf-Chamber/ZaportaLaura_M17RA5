@@ -24,7 +24,7 @@ public class SavingManager : MonoBehaviour
         ItemData data = new ItemData();
 
         data.position = key.transform.position;
-        data.rotation = key.transform.rotation;
+        // data.rotation = key.transform.rotation;
 
         string json = JsonUtility.ToJson(data);
         PlayerPrefs.SetString("KeySave", json);
@@ -38,7 +38,7 @@ public class SavingManager : MonoBehaviour
         PlayerData data = JsonUtility.FromJson<PlayerData>(json);
 
         player.transform.position = data.position;
-        player.transform.rotation = data.rotation;
+        // player.transform.rotation = data.rotation;
 
         if (!string.IsNullOrEmpty(data.currentItemId))
         {
