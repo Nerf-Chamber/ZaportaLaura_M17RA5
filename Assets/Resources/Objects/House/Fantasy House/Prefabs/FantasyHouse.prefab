@@ -337,7 +337,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3459603051315571903, guid: 22109f618aa454ffb8306b7069e5e61a, type: 3}
 --- !u!1 &1269973554213654680
@@ -451,7 +451,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2025703077766461194, guid: 22109f618aa454ffb8306b7069e5e61a, type: 3}
 --- !u!1 &1950252679639081213
@@ -564,7 +564,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3384712136566722152, guid: 22109f618aa454ffb8306b7069e5e61a, type: 3}
 --- !u!1 &3208502416574771617
@@ -678,7 +678,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3562073674547505438, guid: 22109f618aa454ffb8306b7069e5e61a, type: 3}
 --- !u!1 &3734453889698280228
@@ -792,7 +792,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5420149580168298667, guid: 22109f618aa454ffb8306b7069e5e61a, type: 3}
 --- !u!1 &3876802230692580214
@@ -1178,7 +1178,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2849203588802097394, guid: 22109f618aa454ffb8306b7069e5e61a, type: 3}
 --- !u!1 &6565753384455290643
@@ -1292,7 +1292,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2619086233303812490, guid: 22109f618aa454ffb8306b7069e5e61a, type: 3}
 --- !u!1 &8143054369123858787
@@ -1307,7 +1307,7 @@ GameObject:
   - component: {fileID: 6637678282535942999}
   - component: {fileID: 6290917701649380832}
   - component: {fileID: 38738079}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Walls_and_Floors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1520,6 +1520,6 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4411361228764603502, guid: 22109f618aa454ffb8306b7069e5e61a, type: 3}
