@@ -6066,7 +6066,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Cinemachine::Cinemachine.CinemachineCollider
   m_CollideAgainst:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 9
   m_IgnoreTag: 
   m_TransparentLayers:
     serializedVersion: 2
@@ -6501,7 +6501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Cinemachine::Cinemachine.CinemachineCollider
   m_CollideAgainst:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 9
   m_IgnoreTag: 
   m_TransparentLayers:
     serializedVersion: 2
@@ -7298,7 +7298,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5176647960776757423, guid: 58fb5f8a0f14c45dbb82c1b62a5c0e0d, type: 3}
       propertyPath: m_Name
-      value: House
+      value: FantasyHouse
       objectReference: {fileID: 0}
     - target: {fileID: 5520556933773855253, guid: 58fb5f8a0f14c45dbb82c1b62a5c0e0d, type: 3}
       propertyPath: m_LocalScale.x
@@ -7318,7 +7318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5520556933773855253, guid: 58fb5f8a0f14c45dbb82c1b62a5c0e0d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25583744
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5520556933773855253, guid: 58fb5f8a0f14c45dbb82c1b62a5c0e0d, type: 3}
       propertyPath: m_LocalPosition.z

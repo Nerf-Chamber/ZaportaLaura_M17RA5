@@ -17,7 +17,17 @@ public class SavingManager : MonoBehaviour
         PlayerPrefs.SetString("PlayerSave", json);
         PlayerPrefs.Save();
     }
+    public void SaveDoor(Door door)
+    {
+        DoorData data = new DoorData();
 
+        data.position = door.transform.position;
+        data.rotation = door.transform.rotation;
+
+        string json = JsonUtility.ToJson(data);
+        PlayerPrefs.SetString("DoorSave", json);
+        PlayerPrefs.Save();
+    }
     // En un inventari s'hauria d'escalar per tots els items :)
     public void SaveKey(Item key)
     {
@@ -56,6 +66,16 @@ public class SavingManager : MonoBehaviour
                     worldItem.DisableInWorld();
             }
         }
+    }
+    public void LoadDoor(Door door)
+    {
+        if (!PlayerPrefs.HasKey("DoorSave")) return;
+
+        string json = PlayerPrefs.GetString("DoorSave");
+       DoorData data = JsonUtility.FromJson<DoorData>(json);
+
+        door.transform.position = data.position;
+        door.transform.rotation = data.rotation;
     }
     public void LoadKey(Item key)
     {

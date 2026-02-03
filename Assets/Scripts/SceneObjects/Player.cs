@@ -27,7 +27,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     private Vector2 tempDirection = Vector2.zero;
 
     // Jump force fixa
-    private int jumpForce = 42;
+    private int jumpForce = 35;
     private int speed = 0;
 
     private bool isMoving = false;
@@ -54,12 +54,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         PlayerAE.OnAttackEnded += EndAttack;
         PlayerAE.OnDanceEnded += EndDance;
     }
-    private void Start()
-    {
-        _animation.enabled = false;
-        SavingManager.Instance.LoadPlayer(this);
-        _animation.enabled = true;
-    }
+    private void Start() => SavingManager.Instance.LoadPlayer(this);
     private void OnEnable() => inputActions.Enable();
     private void OnDisable() => inputActions.Disable();
 
@@ -188,12 +183,12 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     // ---------- ANIMATION EVENTS ----------
     private void EndJump() => isJumping = false;
+    private void EndAttack() => isAttacking = false;
     private void EndDance()
     {
         isDancing = false;
         CameraManager.Instance.SetCameraTopPriority(Cameras.ThirdPerson);
     }
-    private void EndAttack() => isAttacking = false;
 
     // ---------- ITEM INTERACTION ----------
     public void SetCurrentItem(Item item)
