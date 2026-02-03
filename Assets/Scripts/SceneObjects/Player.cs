@@ -14,6 +14,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     [SerializeField] private RotationBehaviour _rotation;
     [SerializeField] private AnimationBehaviour _animation;
     [SerializeField] private Transform handSocket;
+    [SerializeField] private Transform followFor3P;
     [SerializeField] private Item currentItem;
     [SerializeField] private int walkingSpeed;
     [SerializeField] private int runningSpeed;
@@ -56,7 +57,11 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         PlayerAE.OnAttackEnded += EndAttack;
         PlayerAE.OnDanceEnded += EndDance;
     }
-    private void Start() => SavingManager.Instance.LoadPlayer(this);
+    private void Start()
+    {
+        SavingManager.Instance.LoadPlayer(this);
+        followFor3P.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+    }
     private void OnEnable() => inputActions.Enable();
     private void OnDisable() => inputActions.Disable();
 
@@ -158,14 +163,14 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
             Vector3 tpCamPosition = CameraManager.Instance.GetCamPosition(Cameras.ThirdPerson);
             Vector3 camPlayerVector = new Vector3(tpCamPosition.x - transform.position.x, onMoveDirection.y, tpCamPosition.z - transform.position.z);
 
-            camPlayerVector = Quaternion.Euler(0f, CameraManager.Instance.GetAngleThirdPerson(tempDirection), 0f) * camPlayerVector;
+            camPlayerVector = Quaternion.Euler(0f, CameraManager.Instance.GetAngleCam(tempDirection), 0f) * camPlayerVector;
 
             onMoveDirection = -1 * camPlayerVector.normalized;
         }
     }
     private void ManageMovementFirstPerson(Vector2 tempDirection)
     {
-        if (tempDirection.y < 0 || tempDirection == Vector2.zero)
+        if (tempDirection.y <= 0 || tempDirection == Vector2.zero)
         {
             isMoving = false;
             onMoveDirection = Vector2.zero;
@@ -177,7 +182,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
             Vector3 fpCamPosition = CameraManager.Instance.GetCamPosition(Cameras.FirstPerson);
             Vector3 camPlayerVector = new Vector3(fpCamPosition.x - transform.position.x, onMoveDirection.y, fpCamPosition.z - transform.position.z);
 
-            camPlayerVector = Quaternion.Euler(0f, CameraManager.Instance.GetAngleFirstPerson(tempDirection), 0f) * camPlayerVector;
+            camPlayerVector = Quaternion.Euler(0f, CameraManager.Instance.GetAngleCam(tempDirection), 0f) * camPlayerVector;
 
             onMoveDirection = -1 * camPlayerVector.normalized;
         }

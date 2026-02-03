@@ -48,15 +48,10 @@ public class CameraManager : MonoBehaviour
     { 
         return camMap[camera].transform.position;
     }
-    public float GetAngleThirdPerson(Vector2 tempDirection)
+    public float GetAngleCam(Vector2 tempDirection)
     {
         if (tempDirection != Vector2.zero) return Mathf.Atan2(tempDirection.x, tempDirection.y) * Mathf.Rad2Deg;
         return 0f;
-    }
-    public float GetAngleFirstPerson(Vector2 tempDirection)
-    {
-        if (tempDirection.y < 0 || tempDirection == Vector2.zero) return 0f;
-        else return Mathf.Atan2(tempDirection.x, tempDirection.y) * Mathf.Rad2Deg;
     }
     private void UpdateMinimapCamera()
     {
