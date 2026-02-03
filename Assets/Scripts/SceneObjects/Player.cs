@@ -37,6 +37,8 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     private bool isDancing = false;
     private bool isAiming = false;
 
+    private bool hasWon = false;
+
     public static event Action<Vector3> OnDropItem;
     public static event Action OnSavePressed;
 
@@ -212,6 +214,12 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         if (collider.TryGetComponent(out IInteractable interactable))
             nearbyInteractable = interactable;
+        if (collider.gameObject.layer == LayerMask.NameToLayer("Win") && !hasWon)
+        {
+            hasWon = true;
+            isDancing = true;
+            CameraManager.Instance.SetCameraTopPriority(Cameras.Dance);
+        }
     }
     private void OnTriggerExit(Collider collider)
     {

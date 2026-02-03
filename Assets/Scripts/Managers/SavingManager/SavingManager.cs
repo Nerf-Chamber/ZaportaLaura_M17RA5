@@ -19,7 +19,7 @@ public class SavingManager : MonoBehaviour
     }
     public void SaveDoor(Door door)
     {
-        DoorData data = new DoorData();
+        Data data = new Data();
 
         data.position = door.transform.position;
         data.rotation = door.transform.rotation;
@@ -31,7 +31,7 @@ public class SavingManager : MonoBehaviour
     // En un inventari s'hauria d'escalar per tots els items :)
     public void SaveKey(Item key)
     {
-        ItemData data = new ItemData();
+        Data data = new Data();
 
         data.position = key.transform.position;
         // data.rotation = key.transform.rotation;
@@ -72,7 +72,7 @@ public class SavingManager : MonoBehaviour
         if (!PlayerPrefs.HasKey("DoorSave")) return;
 
         string json = PlayerPrefs.GetString("DoorSave");
-       DoorData data = JsonUtility.FromJson<DoorData>(json);
+       Data data = JsonUtility.FromJson<Data>(json);
 
         door.transform.position = data.position;
         door.transform.rotation = data.rotation;
@@ -85,7 +85,7 @@ public class SavingManager : MonoBehaviour
         if (!key.GetIsCollected())
         {
             string json = PlayerPrefs.GetString("KeySave");
-            ItemData data = JsonUtility.FromJson<ItemData>(json);
+            Data data = JsonUtility.FromJson<Data>(json);
 
             key.transform.position = data.position;
             key.transform.rotation = data.rotation;
