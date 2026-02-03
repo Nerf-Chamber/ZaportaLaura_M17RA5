@@ -27,7 +27,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     private Vector2 tempDirection = Vector2.zero;
 
     // Jump force fixa
-    private int jumpForce = 40;
+    private int jumpForce = 42;
     private int speed = 0;
 
     private bool isMoving = false;
