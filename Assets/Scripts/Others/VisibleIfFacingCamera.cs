@@ -1,15 +1,22 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class VisibleIfFacingCamera : MonoBehaviour
 {
+    [SerializeField] private List<GameObject> objects;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Camera minimapCamera;
 
     private Renderer[] renderers;
 
-    private void Awake() => renderers = GetComponentsInChildren<Renderer>();
-
-    private void Update() { foreach (Renderer rend in renderers) rend.enabled = IsVisible(); }
+    private void Update() 
+    { 
+        foreach (GameObject obj in objects)
+        {
+            renderers = obj.GetComponentsInChildren<Renderer>();
+            foreach (Renderer rend in renderers) rend.enabled = IsVisible();
+        }
+    }
 
     private bool IsVisible()
     {

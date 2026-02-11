@@ -313,7 +313,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 765750621669881126, guid: 12c2402a94c12a8438d2bd016c01b00f, type: 3}
   m_PrefabInstance: {fileID: 7860928932717895764}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 302362336}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e28674a10cf642e4887a96a4123d5b7c, type: 3}
@@ -398,44 +398,11 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1552088396}
---- !u!1 &302362336 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1613485253554417109, guid: 12c2402a94c12a8438d2bd016c01b00f, type: 3}
-  m_PrefabInstance: {fileID: 7860928932717895764}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &302362339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 302362336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eadb462bc31ccdf44b2fd08cadca673d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VisibleIfFacingCamera
-  mainCamera: {fileID: 330585545}
-  minimapCamera: {fileID: 1894696302}
 --- !u!4 &303231194 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 3cd820eda3e921a4c93b4bd620fe386e, type: 3}
   m_PrefabInstance: {fileID: 2116969169}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &303514791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 93463965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eadb462bc31ccdf44b2fd08cadca673d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VisibleIfFacingCamera
-  mainCamera: {fileID: 330585545}
-  minimapCamera: {fileID: 1894696302}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -5796,7 +5763,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 707449836}
-  - component: {fileID: 707449837}
   m_Layer: 0
   m_Name: Bonfire
   m_TagString: Untagged
@@ -5821,20 +5787,6 @@ Transform:
   - {fileID: 518756703}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &707449837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 707449835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eadb462bc31ccdf44b2fd08cadca673d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VisibleIfFacingCamera
-  mainCamera: {fileID: 330585545}
-  minimapCamera: {fileID: 1894696302}
 --- !u!1 &711201830
 GameObject:
   m_ObjectHideFlags: 0
@@ -5846,6 +5798,7 @@ GameObject:
   - component: {fileID: 711201833}
   - component: {fileID: 711201832}
   - component: {fileID: 711201831}
+  - component: {fileID: 711201834}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5894,6 +5847,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &711201834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711201830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb462bc31ccdf44b2fd08cadca673d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VisibleIfFacingCamera
+  objects:
+  - {fileID: 707449835}
+  - {fileID: 1065186706}
+  - {fileID: 93463965}
+  mainCamera: {fileID: 330585545}
+  minimapCamera: {fileID: 1894696302}
 --- !u!1 &802699743
 GameObject:
   m_ObjectHideFlags: 3
@@ -6964,7 +6935,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1065186707}
-  - component: {fileID: 1065186708}
   m_Layer: 0
   m_Name: Water
   m_TagString: Untagged
@@ -6988,20 +6958,6 @@ Transform:
   - {fileID: 1262711813}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1065186708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1065186706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eadb462bc31ccdf44b2fd08cadca673d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VisibleIfFacingCamera
-  mainCamera: {fileID: 330585545}
-  minimapCamera: {fileID: 1894696302}
 --- !u!1 &1256537502
 GameObject:
   m_ObjectHideFlags: 0
@@ -7493,9 +7449,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5176647960776757423, guid: 58fb5f8a0f14c45dbb82c1b62a5c0e0d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 303514791}
     - targetCorrespondingSourceObject: {fileID: 989282425053329020, guid: 58fb5f8a0f14c45dbb82c1b62a5c0e0d, type: 3}
       insertIndex: 1
       addedObject: {fileID: 1877726376}
@@ -9061,10 +9014,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1613485253554417109, guid: 12c2402a94c12a8438d2bd016c01b00f, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 302362339}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 12c2402a94c12a8438d2bd016c01b00f, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
