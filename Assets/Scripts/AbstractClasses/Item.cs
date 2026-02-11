@@ -20,7 +20,7 @@ public abstract class Item : MonoBehaviour, IInteractable
     }
     private void Start() 
     {
-        if (this is Key) { SavingManager.Instance.LoadKey(this); }
+        if (this is Key) { GameManager.Instance.LoadKey(this); }
         pos = transform.position;
         startRotation = new Quaternion();
     }
@@ -37,7 +37,7 @@ public abstract class Item : MonoBehaviour, IInteractable
         }
     }
     // En un inventari s'hauria d'escalar per tots els items :)
-    private void SaveItem() { if (!isCollected && this is Key) SavingManager.Instance.SaveKey(this); }
+    private void SaveItem() { if (!isCollected && this is Key) GameManager.Instance.SaveKey(this); }
     protected void FloatUpDown()
     {
         if (!isCollected)

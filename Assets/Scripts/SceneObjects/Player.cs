@@ -38,7 +38,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     private bool isDancing = false;
     private bool isAiming = false;
 
-    private bool hasWon = false;
+    public bool hasWon = false;
 
     public static event Action<Vector3> OnDropItem;
     public static event Action OnSavePressed;
@@ -59,7 +59,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     }
     private void Start()
     {
-        SavingManager.Instance.LoadPlayer(this);
+        GameManager.Instance.LoadPlayer(this);
         followFor3P.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
     }
     private void OnEnable() => inputActions.Enable();
@@ -81,7 +81,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public void OnAttack(InputAction.CallbackContext context) => isAttacking = isDancing? false : true;
     public void OnSave(InputAction.CallbackContext context)
     {
-        SavingManager.Instance.SavePlayer(this);
+        GameManager.Instance.SavePlayer(this);
         OnSavePressed?.Invoke();
     }
     public void OnInteract(InputAction.CallbackContext context)
@@ -107,6 +107,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         if (!isDancing)
         {
             isDancing = true;
+            isAiming = false;
             CameraManager.Instance.SetCameraTopPriority(Cameras.Dance);
         }
     }
@@ -223,6 +224,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         {
             hasWon = true;
             isDancing = true;
+            isAiming = false;
             CameraManager.Instance.SetCameraTopPriority(Cameras.Dance);
         }
     }

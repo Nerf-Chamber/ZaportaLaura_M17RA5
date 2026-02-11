@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class SavingManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    public static SavingManager Instance;
+    public static GameManager Instance;
     private void Awake() => Instance = this;
 
     public void SavePlayer(Player player)
@@ -12,6 +12,7 @@ public class SavingManager : MonoBehaviour
         data.position = player.transform.position;
         data.rotation = player.transform.rotation;
         data.currentItemId = player.GetCurrentItem() != null ? player.GetCurrentItem().itemId : null;
+        data.hasWon = player.hasWon;
 
         string json = JsonUtility.ToJson(data);
         PlayerPrefs.SetString("PlayerSave", json);
@@ -49,6 +50,7 @@ public class SavingManager : MonoBehaviour
 
         player.transform.position = data.position;
         player.transform.rotation = data.rotation;
+        player.hasWon = data.hasWon;
 
         if (!string.IsNullOrEmpty(data.currentItemId))
         {
