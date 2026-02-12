@@ -11,34 +11,22 @@ public class GameManager : MonoBehaviour
 
         data.position = player.transform.position;
         data.rotation = player.transform.rotation;
-        data.currentItemId = player.GetCurrentItem() != null ? player.GetCurrentItem().itemId : null;
+        data.currentItemId = player.GetCurrentItem() != null ? player.GetCurrentItem().GetItemId() : null;
         data.hasWon = player.hasWon;
 
         string json = JsonUtility.ToJson(data);
         PlayerPrefs.SetString("PlayerSave", json);
         PlayerPrefs.Save();
     }
-    public void SaveDoor(Door door)
+    public void SaveObject(GameObject obj, string saveString)
     {
         Data data = new Data();
 
-        data.position = door.transform.position;
-        data.rotation = door.transform.rotation;
+        data.position = obj.transform.position;
+        data.rotation = obj.transform.rotation;
 
         string json = JsonUtility.ToJson(data);
-        PlayerPrefs.SetString("DoorSave", json);
-        PlayerPrefs.Save();
-    }
-    // En un inventari s'hauria d'escalar per tots els items :)
-    public void SaveKey(Item key)
-    {
-        Data data = new Data();
-
-        data.position = key.transform.position;
-        data.rotation = key.transform.rotation;
-
-        string json = JsonUtility.ToJson(data);
-        PlayerPrefs.SetString("KeySave", json);
+        PlayerPrefs.SetString(saveString, json);
         PlayerPrefs.Save();
     }
     public void LoadPlayer(Player player)
@@ -69,35 +57,22 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public void LoadDoor(Door door)
+    public void LoadObject(GameObject obj, string saveString)
     {
-        if (!PlayerPrefs.HasKey("DoorSave")) return;
+        if (!PlayerPrefs.HasKey(saveString)) return;
 
-        string json = PlayerPrefs.GetString("DoorSave");
-       Data data = JsonUtility.FromJson<Data>(json);
+        string json = PlayerPrefs.GetString(saveString);
+        Data data = JsonUtility.FromJson<Data>(json);
 
-        door.transform.position = data.position;
-        door.transform.rotation = data.rotation;
-    }
-    public void LoadKey(Item key)
-    {
-        if (!PlayerPrefs.HasKey("KeySave")) return;
-
-        if (!key.GetIsCollected())
-        {
-            string json = PlayerPrefs.GetString("KeySave");
-            Data data = JsonUtility.FromJson<Data>(json);
-
-            key.transform.position = data.position;
-            key.transform.rotation = data.rotation;
-        }
+        obj.transform.position = data.position;
+        obj.transform.rotation = data.rotation;
     }
     private Item FindWorldItem(string itemId)
     {
         Item[] items = FindObjectsByType<Item>(FindObjectsSortMode.InstanceID);
         foreach (Item item in items)
         {
-            if (item.itemId == itemId && !item.GetIsCollected())
+            if (item.GetItemId() == itemId && !item.GetIsCollected())
                 return item;
         }
         return null;

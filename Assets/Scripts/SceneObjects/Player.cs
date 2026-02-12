@@ -229,6 +229,8 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         if (collider.TryGetComponent(out IInteractable interactable))
             nearbyInteractable = interactable;
+        if (collider.TryGetComponent(out IPunchable punchable))
+            punchable.Punched(transform);
         if (collider.gameObject.layer == LayerMask.NameToLayer("Win") && !hasWon)
         {
             hasWon = true;

@@ -8,13 +8,15 @@ public class VisibleIfFacingCamera : MonoBehaviour
     [SerializeField] private Camera minimapCamera;
 
     private Renderer[] renderers;
-
+    private Light[] lights;
     private void Update() 
     { 
         foreach (GameObject obj in objects)
         {
             renderers = obj.GetComponentsInChildren<Renderer>();
+            lights = obj.GetComponentsInChildren<Light>();
             foreach (Renderer rend in renderers) rend.enabled = IsVisible();
+            foreach (Light light in lights) light.enabled = IsVisible();
         }
     }
 

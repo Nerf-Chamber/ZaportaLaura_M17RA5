@@ -8,5 +8,5 @@ public class ItemDB : MonoBehaviour
 
     private void Awake() => Instance = this;
 
-    public Item GetItemById(string id) { return items.Find(item => item.itemId == id); }
+    public Item GetItemById(string id) { return items.Find(item => item.GetItemId() == id); }
 }

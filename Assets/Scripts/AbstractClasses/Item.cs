@@ -1,11 +1,12 @@
 using UnityEngine;
 
+[RequireComponent(typeof(FloatBehaviour))]
 public abstract class Item : MonoBehaviour, IInteractable
 {
-    public string itemId;
-    public float floatAmplitude = 0.25f;
-    public float floatFrequency = 1f;
-    public float rotationSpeed = 45;
+    [SerializeField] protected string saveString;
+    [SerializeField] protected string itemId;
+
+    private FloatBehaviour _float;
 
     protected Vector3 pos;
     protected Quaternion startRotation;
@@ -14,17 +15,19 @@ public abstract class Item : MonoBehaviour, IInteractable
 
     private void Awake()
     {
+        _float = GetComponent<FloatBehaviour>();
+
         Player.OnDropItem += RestoreState;
         Player.OnSavePressed += SaveItem;
         startY = transform.position.y;
     }
     private void Start() 
     {
-        if (this is Key) { GameManager.Instance.LoadKey(this); }
+        if (this is Key) { GameManager.Instance.LoadObject(gameObject, saveString); }
         pos = transform.position;
         startRotation = new Quaternion();
     }
-    private void Update() => FloatUpDown();
+    private void Update() { if (!isCollected) _float.Float(pos); }
     private void RestoreState(Vector3 playerPos)
     {
         if (isCollected)
@@ -37,17 +40,7 @@ public abstract class Item : MonoBehaviour, IInteractable
         }
     }
     // En un inventari s'hauria d'escalar per tots els items :)
-    private void SaveItem() { if (!isCollected && this is Key) GameManager.Instance.SaveKey(this); }
-    protected void FloatUpDown()
-    {
-        if (!isCollected)
-        {
-            float newY = pos.y + Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
-            transform.position = new Vector3(pos.x, newY, pos.z);
-
-            transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime, Space.World);
-        }
-    }
+    private void SaveItem() { if (!isCollected && this is Key) GameManager.Instance.SaveObject(gameObject, saveString); }
     public void Interact(Player player)
     {
         if (player.GetCurrentItem() == null)
@@ -59,6 +52,7 @@ public abstract class Item : MonoBehaviour, IInteractable
         }
     }
     public bool GetIsCollected() { return isCollected; }
+    public string GetItemId() { return itemId; }
     public void SetAsEquipped()
     {
         isCollected = true;

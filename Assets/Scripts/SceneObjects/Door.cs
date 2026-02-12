@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Door : MonoBehaviour, IInteractable
 {
+    [SerializeField] private string saveString;
+
     bool hasBeenOpened = false;
     bool open = false;
 
@@ -12,7 +14,7 @@ public class Door : MonoBehaviour, IInteractable
         Player.OnSavePressed += SaveDoor;
         initialYRotation = transform.eulerAngles.y;
     }
-    private void Start() => GameManager.Instance.LoadDoor(this);
+    private void Start() => GameManager.Instance.LoadObject(gameObject, saveString);
     private void Update() 
     {
         if (open && transform.eulerAngles.y < initialYRotation + 90) OpenDoor(); 
@@ -30,5 +32,5 @@ public class Door : MonoBehaviour, IInteractable
         transform.Rotate(new Vector3(0, Time.deltaTime * 90, 0), Space.World);
         hasBeenOpened = true;
     }
-    private void SaveDoor() => GameManager.Instance.SaveDoor(this);
+    private void SaveDoor() => GameManager.Instance.SaveObject(gameObject, saveString);
 }
