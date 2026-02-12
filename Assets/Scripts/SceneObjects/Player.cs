@@ -13,6 +13,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     [SerializeField] private JumpBehaviour _jump;
     [SerializeField] private RotationBehaviour _rotation;
     [SerializeField] private AnimationBehaviour _animation;
+    [SerializeField] private GameObject handPunch;
     [SerializeField] private Transform handSocket;
     [SerializeField] private Transform followFor3P;
     [SerializeField] private Item currentItem;
@@ -56,11 +57,14 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         PlayerAE.OnJumpEnded += EndJump;
         PlayerAE.OnAttackEnded += EndAttack;
         PlayerAE.OnDanceEnded += EndDance;
+        PlayerAE.OnPunchUp += () => ManagePunchActivation(true);
     }
     private void Start()
     {
         GameManager.Instance.LoadPlayer(this);
         followFor3P.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
+        ManagePunchActivation(false);
     }
     private void OnEnable() => inputActions.Enable();
     private void OnDisable() => inputActions.Disable();
@@ -78,7 +82,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     }
 
     // ---------- INTERFACE IMPLEMENTATION ----------
-    public void OnAttack(InputAction.CallbackContext context) => isAttacking = isDancing? false : true;
+    public void OnAttack(InputAction.CallbackContext context) => isAttacking = isDancing ? false : true;
     public void OnSave(InputAction.CallbackContext context)
     {
         GameManager.Instance.SavePlayer(this);
@@ -135,6 +139,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         _animation.SetAimState(isAiming);
         _animation.SetCurrentLayer(isAiming || isAttacking);
     }
+    private void ManagePunchActivation(bool isActivated) => handPunch.SetActive(isActivated);
     private void ManageSpeed()
     {
         if (isMoving && !isDancing) { speed = isSprinting ? runningSpeed : walkingSpeed; }
@@ -191,7 +196,11 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     // ---------- ANIMATION EVENTS ----------
     private void EndJump() => isJumping = false;
-    private void EndAttack() => isAttacking = false;
+    private void EndAttack() 
+    { 
+        isAttacking = false;
+        ManagePunchActivation(false);
+    }
     private void EndDance()
     {
         isDancing = false;
