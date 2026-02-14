@@ -3,13 +3,21 @@
 #### Controls:
 
 **WASD:** Usual horizontal movement
+
 **Space:** Jump
+
 **E:** Interact / Pick items
+
 **Q:** Drop items
+
 **0:** Dance :D
+
 **O:** Save the game
+
 **Esc:** Exit the game
+
 **Left mouse button:** Punch
+
 **Right mouse button:** Aim
 
 #### LORE and GOAL of the game:
