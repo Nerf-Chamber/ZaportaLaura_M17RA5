@@ -29,6 +29,12 @@ _**Right mouse button:**_ Aim
 In this short ahh game you are a little ninja living in a pretty house near a lake. The other day You were training in the forest when You dropped your house key. 
 Your goal is to find your key and enter your house so you can Dance Dance Revolution inside It. Good luck!
 
+----------
+### Build
+----------
+
+The build folder is too heavy for github so click this link to get it: https://drive.google.com/drive/folders/1ZtPI22Jb6oiHfkXQbiO1wL3KCRegPgqr?usp=sharing
+
 ---------------------
 ### Notes and others
 ---------------------
