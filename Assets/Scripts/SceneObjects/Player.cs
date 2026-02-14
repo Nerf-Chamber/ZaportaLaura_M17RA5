@@ -127,6 +127,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
             CameraManager.Instance.SetCameraTopPriority(cam);
         }
     }
+    public void OnExit(InputAction.CallbackContext context) => Application.Quit();
 
     // ---------- MANAGE METHODS ----------
     private void ManageAnimationStates()
