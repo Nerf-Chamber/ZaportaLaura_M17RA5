@@ -1,7 +1,7 @@
 ## 🥷 Sensless ninja 🥷 --- M17RA5
 
 -------------
-### Controls:
+### Controls
 -------------
 
 _**WASD:**_ Usual horizontal movement
@@ -23,7 +23,7 @@ _**Left mouse button:**_ Punch
 _**Right mouse button:**_ Aim
 
 ------------------------------
-### LORE and GOAL of the game:
+### LORE and GOAL of the game
 ------------------------------
 
 In this short ahh game you are a little ninja living in a pretty house near a lake. The other day You were training in the forest when You dropped your house key in there. 
