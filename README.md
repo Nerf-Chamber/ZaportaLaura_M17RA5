@@ -1,5 +1,6 @@
 ## 🥷 Sensless ninja 🥷 --- M17RA5
 
+-------------
 ### Controls:
 -------------
 
@@ -21,7 +22,7 @@ _**Left mouse button:**_ Punch
 
 _**Right mouse button:**_ Aim
 
-
+------------------------------
 ### LORE and GOAL of the game:
 ------------------------------
 
