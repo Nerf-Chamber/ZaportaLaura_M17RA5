@@ -40,6 +40,7 @@ The build folder is too heavy for github so click this link to get it: https://d
 ---------------------
 
 - The Post Processing package for the lighting didn't work so I removed It :c
+- First person movement is limited to W, W-A and W-D
 - You can puch da box :D
 - You can drown da box :I
 - For the performance I added a scipt that renders the objects only when visible to the player
