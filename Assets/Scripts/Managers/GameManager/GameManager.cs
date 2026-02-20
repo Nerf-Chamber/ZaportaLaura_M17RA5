@@ -61,6 +61,9 @@ public class GameManager : MonoBehaviour
     {
         if (!PlayerPrefs.HasKey(saveString)) return;
 
+        if (obj.TryGetComponent(out Item item))
+            if (item.GetIsCollected()) { return; }
+
         string json = PlayerPrefs.GetString(saveString);
         Data data = JsonUtility.FromJson<Data>(json);
 
